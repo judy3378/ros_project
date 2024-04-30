@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <!-- Configuration pour le robot réel -->
+  <!-- Initialisation des paramètres du robot -->
+  <param name="robot_description" command="$(find xacro)/xacro $(find projet)/urdf/turtlebot3.urdf.xacro" />
+  
+  <!-- Play the rosbag -->
+  <!--<node pkg="rosbag" type="play" name="2024-04-24-10-20-36" args="/home/turtle/2024-04-24-10-20-36.bag" />-->
+
+  <!-- Les publishers pour l'état du robot -->
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+  <!-- Lancement de RViz pour la visualisation -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find projet)/rviz/config.rviz"/>
+
+  <!-- Parameter to indicate if this is a simulation -->
+  <param name="use_sim" value="False"/>
+  <!-- Parameter for the image topic to subscribe to -->
+  <param name="image_topic" value="/raspicam_node/image/compressed"/>
+  
+
+</launch>

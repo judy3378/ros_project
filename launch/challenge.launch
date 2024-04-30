@@ -17,8 +17,9 @@
 
 
 
+ <!--
 <node pkg="gazebo_ros" type="spawn_model" name="spawn_urdf" args="-urdf -model turtlebot3_burger -x 0.87 -y -1.74 -z 0.0 -Y 0 -param robot_description" /> 
-
+-->
 
 <node pkg="projet" name='respawn' type='respawn.py' /> 
 
@@ -30,7 +31,7 @@
 <!-- <node pkg="gazebo_ros" type="spawn_model" name="spawn_urdf" args="-urdf -model turtlebot3_burger -x 1 -y 1.5 -z 0.0 -Y -1.57 -param robot_description" />-->
 
 <!-- respwan in front of clutter-->
-<!--node pkg="gazebo_ros" type="spawn_model" name="spawn_urdf" args="-urdf -model turtlebot3_burger -x -1.85 -y -1 -z 0.0 -Y -1.57 -param robot_description" /-->
+<node pkg="gazebo_ros" type="spawn_model" name="spawn_urdf" args="-urdf -model turtlebot3_burger -x -2.85 -y -1 -z 0.0 -Y -1.57 -param robot_description"/>
 
 
 
