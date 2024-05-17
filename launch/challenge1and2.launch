@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+  <!-- Include the Gazebo empty world launch file with specific arguments -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+      <arg name="world_name" value="$(find projet)/worlds/Projet2024.world"/>
+      <arg name="paused" value="false"/>
+      <arg name="use_sim_time" value="true"/>
+      <arg name="gui" value="true"/>
+      <arg name="headless" value="false"/>
+      <arg name="debug" value="false"/>
+  </include>
+
+  <!-- Spwan turtlebot in Gazebo -->
+  <param name="robot_description" command="$(find xacro)/xacro $(find projet)/urdf/turtlebot3.urdf.xacro " />
+
+  <node pkg="gazebo_ros" type="spawn_model" name="spawn_urdf" args="-urdf -model turtlebot3_burger -x 0.87 -y -1.74 -z 0.0 -Y 0 -param robot_description" /> 
+
+  <!-- Nodes for publishing joint states and robot states -->
+  <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui"/>
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find projet)/rviz/config.rviz"/>
+
+  <!-- Parameter to indicate if this is a simulation -->
+  <param name="use_sim" value="true" />
+
+  <!-- Parameter for the image topic to subscribe to -->
+  <param name="image_topic" value="/camera/image"/>
+
+  <!-- Parameters for the line_follower node -->
+  <param name="max_linear_velocity" value="0.27"/>
+  <param name="min_linear_velocity" value="0.08"/>
+  <param name="angular_velocity_factor" value="0.065"/>
+
+  <!-- Run line_detection node -->
+  <node name="line_detection" pkg="projet" type="line_detection.py"/>
+
+  <!-- Run line_follower node -->
+  <node name="line_follower" pkg="projet" type="line_follower.py"/>
+
+  <!-- Run obstacle_avoidaer node -->
+  <node name="obstacle_avoider" pkg="projet" type="obstacle_avoider.py"/>
+
+  <!-- Run corridor node -->
+  <node name="corridor" pkg="projet" type="corridor.py"/>
+  
+</launch>
