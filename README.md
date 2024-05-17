@@ -30,7 +30,10 @@ To launch the challenge 3:
 ```
 roslaunch projet challenge3.launch
 ```
-
+To launch all of the challenges : 
+```
+roslaunch projet challenge_all.launch
+```
 
 
 
