@@ -10,8 +10,11 @@ import numpy as np
 from sensor_msgs.msg import Image, LaserScan, CompressedImage
 from geometry_msgs.msg import Twist
 from cv_bridge import CvBridge, CvBridgeError
-from obstacle_avoider import index_from_angle
 import math
+
+def index_from_angle(angle, data):
+    # Calculate index for a given angle using the LaserScan message
+    return int((angle - data.angle_min) / data.angle_increment)
 
 class Door:
     
