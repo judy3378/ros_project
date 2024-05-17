@@ -190,12 +190,13 @@ include_directories(
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(PROGRAMS
   src/corridor.py
+  src/doors.py
   src/line_detection.py
   src/line_follower.py
   src/mybot_teleop.py
+  src/navigation_controller.py
   src/obstacle_avoider.py
   src/stop_at_obstacle.py
-  src/doors.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
