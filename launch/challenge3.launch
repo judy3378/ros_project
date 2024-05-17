@@ -19,7 +19,7 @@
 
 
 <!-- Parameter to indicate if this is a simulation -->
-  <param name="use_sim" value="true" />
+<param name="use_sim" value="true" />
 
 <!-- Parameter for the image topic to subscribe to -->
 <param name="image_topic" value="/camera/image"/> 
@@ -29,7 +29,7 @@
 <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
 
 <!-- Run Doors node -->
-  <node name="door" pkg="projet" type="doors.py"/>
+<node name="door" pkg="projet" type="doors.py"/>
 
 <!--<node name="rviz" pkg="rviz" type="rviz" args="-d $(find projet/rviz/config.rviz"/> -->
 </launch>
