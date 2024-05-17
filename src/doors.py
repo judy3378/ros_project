@@ -13,7 +13,7 @@ from cv_bridge import CvBridge, CvBridgeError
 from obstacle_avoider import index_from_angle
 import math
 
-class detectObject:
+class Door:
     
     def __init__(self):
         
@@ -62,14 +62,10 @@ class detectObject:
         self.blue_H_u = rospy.get_param("/blue_H_u", 130)
         self.blue_S_u = rospy.get_param("/blue_S_u", 255)
         self.blue_V_u = rospy.get_param("/blue_V_u", 255)
-
-        # Initial states
-        self.corridor_active = False
-        self.detector_ready = False  # Flag to indicate readiness
         
         # Check in which environment we are (simulation or real world)
         env = 'simulation' if self.use_sim else 'real'
-        print("I'm in ", env, " environment.")
+        # print("I'm in ", env, " environment.")
         self.detecting_blue = True
         
     def image_callback(self, data):
@@ -170,13 +166,13 @@ class detectObject:
 
         if min(self.front_range) < self.min_distance:
             self.obstacle_detected = True
-            print("Obstacle detected in the front!", min(self.front_range))
+            # print("Obstacle detected in the front!", min(self.front_range))
         elif min(self.left_range) < self.min_distance:
             self.obstacle_detected = True
-            print("Obstacle detected in the left!", min(self.left_range))
+            # print("Obstacle detected in the left!", min(self.left_range))
         elif min(self.right_range) < self.min_distance:
             self.obstacle_detected = True
-            print("Obstacle detected in the right!", min(self.right_range))
+            # print("Obstacle detected in the right!", min(self.right_range))
         else:
             self.obstacle_detected = False
     
@@ -185,25 +181,25 @@ class detectObject:
         if self.obstacle_detected:
             if min(self.filtered_front_safety) < self.critical_distance:
                 self.move_backward()
-                rospy.loginfo("Moving backward...")
+                # rospy.loginfo("Moving backward...")
                 time.sleep(2)
-                print("Stopping")
+                # print("Stopping")
                 self.obstacle_detected = False
             elif min(self.filtered_front_safety) < self.min_distance:
                 if min(self.left_range) < min(self.right_range):
                     # More space on the right side to keep going
                     self.turn_right()
-                    rospy.loginfo("Turning right...")
+                    # rospy.loginfo("Turning right...")
                 else:
                     # More space on the left side to keep going
                     self.turn_left()
-                    rospy.loginfo("Turning left...")
+                    # rospy.loginfo("Turning left...")
             elif min(self.filtered_front_safety) > self.min_distance and (min(self.left_range) < self.min_distance or min(self.right_range) < self.min_distance):
                 self.move_forward()
-                rospy.loginfo("Moving forward...")
+                # rospy.loginfo("Moving forward...")
             else:
                 self.obstacle_detected = False
-                rospy.loginfo("No more obstacle")
+                # rospy.loginfo("No more obstacle")
     
     def update(self, mask, image):
         if self.blue_detected or self.green_detected:
@@ -215,13 +211,13 @@ class detectObject:
                     if min(self.left_range) < min(self.right_range):
                         # More space on the right side to keep going
                         self.move_backward_left()
-                        rospy.loginfo("Moving backward and turning left to avoid obstacle...")
+                        # rospy.loginfo("Moving backward and turning left to avoid obstacle...")
                     else:
                         # More space on the left side to keep going
                         self.move_backward_right()
-                        rospy.loginfo("Moving backward and turning right to avoid obstacle...")
+                        # rospy.loginfo("Moving backward and turning right to avoid obstacle...")
                     time.sleep(2)  # Adjust sleep duration as needed
-                    print("Stopping")
+                    # print("Stopping")
                     self.obstacle_detected = False
                     
                 elif min(self.filtered_front_safety) < self.critical_distance:
@@ -229,12 +225,12 @@ class detectObject:
                     if min(self.left_range) < min(self.right_range):
                         # More space on the right side
                         self.turn_right()
-                        rospy.loginfo("Turning right...")
+                        # rospy.loginfo("Turning right...")
 
                     else:
                         # More space on the left side
                         self.turn_left()
-                        rospy.loginfo("Turning left...")
+                        # rospy.loginfo("Turning left...")
         
                 else:
                     # No immediate obstacle detected
@@ -245,22 +241,24 @@ class detectObject:
         else:
             # Stop the robot if no object is detected
             self.stop_robot()
-            rospy.loginfo("Searching for object...")
+            # rospy.loginfo("Searching for object...")
         
         # Check if large contours of blue are detected
         large_blue_contours = [contour for contour in cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0] if cv2.contourArea(contour) >=100]
         if not large_blue_contours or self.target_x <= 50 or self.target_x >=image.shape[1] - 50:
             # No large blue contours or robot is at the edges of the screen
             self.blue_detected = False
+            self.move_forward()
         
-        # Inside the update method
-        print("Detecting blue:", self.detecting_blue)
-        print("Blue detected:", self.blue_detected)
+
+        # print("Detecting blue:", self.detecting_blue)
+        # print("Blue detected:", self.blue_detected)
 
         # Transition from detecting blue to green
         if self.detecting_blue and not self.blue_detected:
             self.detecting_blue = False
-            rospy.loginfo("Switching to green object detection...")
+            
+            # rospy.loginfo("Switching to green object detection...")
 
         cv2.imshow('update image', image)
         cv2.waitKey(1)
@@ -280,7 +278,7 @@ class detectObject:
         
     def stop_robot(self):
         self.publish_velocity(0.0, 0.0)
-        rospy.loginfo("Shutting down. Robot stopped.")
+        # rospy.loginfo("Shutting down. Robot stopped.")
     
     def move_backward(self):
         self.publish_velocity(-0.1, 0.0)
@@ -292,7 +290,7 @@ class detectObject:
         self.publish_velocity(0.0, 1.0)
     
     def move_forward(self):
-        self.publish_velocity(0.08, 0.0)
+        self.publish_velocity(0.3, 0.0)
         
     def publish_velocity(self, linear_speed, angular_speed):
         twist_msg = Twist()
@@ -302,15 +300,15 @@ class detectObject:
 
 def main():
     rospy.init_node('colored_object_detector', anonymous=True)
-    obj_detector = detectObject()
-    obj_detector.load_parameters()
+    door = Door()
+    door.load_parameters()
     rate = rospy.Rate(10)
     
     # Reset parameters and flags
-    obj_detector.detecting_blue = True
-    obj_detector.green_detected = False
-    obj_detector.blue_detected = True
-    obj_detector.obstacle_detected = False
+    door.detecting_blue = True
+    door.green_detected = False
+    door.blue_detected = True
+    door.obstacle_detected = False
     while not rospy.is_shutdown():
         rate.sleep()
     
