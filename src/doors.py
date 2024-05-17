@@ -302,7 +302,7 @@ class Door:
         self.cmd_vel_pub.publish(twist_msg)
 
 def main():
-    rospy.init_node('colored_object_detector', anonymous=True)
+    rospy.init_node('Door', anonymous=True)
     door = Door()
     door.load_parameters()
     rate = rospy.Rate(10)
