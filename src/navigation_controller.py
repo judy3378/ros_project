@@ -52,6 +52,8 @@ class NavigationController:
             self.obstacle_avoider_pub.publish(Bool(False))
             # Activate corridor 
             self.corridor_pub.publish(Bool(True))
+		
+	    
 	elif(robot_x >= self.checkpoint3_x) and (robot_y >= self.checkpoint3_y) and (self.corridor_gazebo_pub.publish == True): 
 	    # Deactivate corridor, line following, line detection, and obstacle avoidance
             self.line_following_pub.publish(Bool(False))
