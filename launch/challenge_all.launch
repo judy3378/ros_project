@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find projet)/worlds/Projet2024.world"/>
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+  <!-- Spawn turtlebot in Gazebo -->
+  <param name="robot_description" command="$(find xacro)/xacro $(find projet)/urdf/turtlebot3.urdf.xacro " />
+  <node pkg="gazebo_ros" type="spawn_model" name="spawn_urdf" args="-urdf -model turtlebot3_burger -x 0.87 -y -1.74 -z 0.0 -Y 0 -param robot_description" />
+
+  <!-- Start navigation controller node -->
+  <node name="navigation_controller" pkg="projet" type="navigation_controller.py" output="screen" />
+
+  <!-- Start additional nodes -->
+  <node name="line_follower" pkg="projet" type="line_follower.py" output="screen" />
+  <node name="line_detection" pkg="projet" type="line_detection.py" output="screen" />
+  <node name="obstacle_avoider" pkg="projet" type="obstacle_avoider.py" output="screen" />
+  <node name="corridor_gazebo" pkg="projet" type="corridor_gazebo.py" output="screen" />
+
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+  <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find projet/rviz/config.rviz"/> -->
+
+</launch>
+
