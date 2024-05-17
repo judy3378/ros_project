@@ -22,6 +22,7 @@ source ~/.bashrc
 ```
 
 ### Structure
+```
 .
 └── catkin_ws/
     ├── build
@@ -45,3 +46,4 @@ source ~/.bashrc
             ├── worlds
             ├── CMakeLists.txt
             └── package.xml
+```
