@@ -22,28 +22,26 @@ source ~/.bashrc
 ```
 
 ### Structure
-catkin_ws
-  build
-  devel
-  src
-    projet
-      config
-        color_ranges.yaml
-      launch
-        challenge1and2.launch
-        challenge3.launch
-      msg
-        LinePosition.msg
-      rviz
-        config.rviz
-        config_cam.rviz
-      src
-      srv
-        StartCorridor.srv
-      urdf
-      worlds
-      CMakeLists.txt
-      package.xml
-      
-  
-
+.
+└── catkin_ws/
+    ├── build
+    ├── devel
+    └── src/
+        └── projet/
+            ├── config/
+            │   └── color_ranges.yaml
+            ├── launch/
+            │   ├── challenge1and2.launch
+            │   └── challenge3.launch
+            ├── msg/
+            │   └── LinePosition.msg
+            ├── rviz/
+            │   ├── config.rviz
+            │   └── config_cam.rviz
+            ├── src
+            ├── srv/
+            │   └── StartCorridor.srv
+            ├── urdf
+            ├── worlds
+            ├── CMakeLists.txt
+            └── package.xml
