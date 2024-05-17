@@ -21,6 +21,19 @@ catkin_make
 source ~/.bashrc
 ```
 
+## Launch Challenges
+To launch the challenge 1 and 2:
+```
+roslaunch projet challenge1and2.launch
+```
+To launch the challenge 3:
+```
+roslaunch projet challenge3.launch
+```
+
+
+
+
 ### Structure
 ```
 .
