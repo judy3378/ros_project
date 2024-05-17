@@ -1,0 +1,4 @@
+# StartCorridor.srv
+---
+bool started
+string message
