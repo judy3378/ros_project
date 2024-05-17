@@ -21,7 +21,7 @@
   <node name="line_follower" pkg="projet" type="line_follower.py" output="screen" />
   <node name="line_detection" pkg="projet" type="line_detection.py" output="screen" />
   <node name="obstacle_avoider" pkg="projet" type="obstacle_avoider.py" output="screen" />
-  <node name="corridor_gazebo" pkg="projet" type="corridor_gazebo.py" output="screen" />
+  <node name="corridor_gazebo" pkg="projet" type="corridor.py" output="screen" />
 
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
