@@ -61,6 +61,10 @@ class LineDetector:
         # Initial states
         self.corridor_active = False
         self.detector_ready = False  # Flag to indicate readiness
+        
+        # Check in which environment we are (simulation or real world)
+        self.env = 'simulation' if self.use_sim else 'real'
+        print("I'm in ", self.env, " environment.")
 
     def callback(self, data):
         # Convert the image from ROS to OpenCV format
@@ -88,14 +92,12 @@ class LineDetector:
             hsv = cv2.cvtColor(roi, cv2.COLOR_BGR2HSV)
             hsv = cv2.GaussianBlur(hsv, (5, 5), 0)
 
-            # Check in which environment we are (simulation or real world)
-            env = 'simulation' if self.use_sim else 'real'
-            print("I'm in ", env, " environment.")
+            
             masks = {}
             combined_mask = None
 
             # Create masks for each color range
-            for color, (lower, upper) in self.color_ranges[env].items():
+            for color, (lower, upper) in self.color_ranges[self.env].items():
                 lower_np = np.array(lower, dtype="uint8")
                 upper_np = np.array(upper, dtype="uint8")
 
